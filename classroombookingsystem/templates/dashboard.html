@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Dashboard</h2>
+    <h3>Classrooms</h3>
+
+    {% comment %} <p>Your authentication token: {{ token }}</p> {% endcomment %}
+
+    {% if classrooms %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Classroom Name</th>
+                    <th>Total Seats</th>
+                    <th>Available Seats</th>
+                    <th>Status</th>
+                    {% if user.role == 'teacher' %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for classroom in classrooms %}
+                <tr>
+                    <td>{{ classroom.name }}</td>
+                    <td>{{ classroom.total_seats }}</td>
+                    <td>{{ classroom.available_seats }}</td>
+                    <td>{{ classroom.status }}</td>
+                    {% if user.role == 'teacher' %}
+                    <td>
+                        <a href="{% url 'update_classroom' classroom.id %}">Edit</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No classrooms available.</p>
+    {% endif %}
+</body>
+</html>

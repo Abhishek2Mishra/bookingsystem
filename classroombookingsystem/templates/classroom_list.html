@@ -1,0 +1,53 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Available Classrooms</title>
+</head>
+<body>
+    <h2>Available Classrooms</h2>
+    <ul>
+        {% for classroom in classrooms %}
+            <li>{{ classroom.name }} - Seats Available: {{ classroom.available_seats }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Classrooms</title>
+</head>
+<body>
+    <h1>Available Classrooms</h1>
+
+    {% if success_message %}
+        <p style="color: green;">{{ success_message }}</p>
+    {% endif %}
+
+    {% if classrooms %}
+        <ul>
+            {% for classroom in classrooms %}
+                <li>
+                    <strong>{{ classroom.name }}</strong>
+                    <p>Available Seats: {{ classroom.available_seats }}</p>
+
+                    <!-- Booking Form -->
+                    <form method="post" action="{% url 'main:api_book_seat' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="classroom_id" value="{{ classroom.id }}">
+                        <button type="submit">Book a Seat</button>
+                    </form>                    
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No available classrooms at the moment.</p>
+    {% endif %}
+
+    {% comment %} <a href="{% url 'dashboard' %}">Back to Dashboard</a> {% endcomment %}
+</body>
+</html>
